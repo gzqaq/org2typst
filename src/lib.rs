@@ -27,7 +27,7 @@ pub fn run(mut config: Config) -> Result<(), &'static str> {
         .read_to_string(&mut org_contents)
         .expect("Unable to read org file");
 
-    let patterns = Regex::new("#\\+title:\\s([\\w-]+)\\s#\\+author:\\s([\\w ]+)|\\n(\\*+)|(#\\+begin_src\\s|#\\+end_src)|(:PROPERTIES:\\s:ID:\\s+[\\w-]*\\s:END:)|(#\\+.+\\s)|/([\\w ]+)/|\\[\\[id:.+\\]\\[([\\w-]+)\\]\\]|``([\\w\\s]+)''|\\[cite:(@\\w+)\\]").expect("Unable to create regex pattern");
+    let patterns = Regex::new("#\\+title:\\s([\\w-]+)\\s#\\+author:\\s([\\w ]+)|\\n(\\*+) |(#\\+begin_src\\s|#\\+end_src)|(:PROPERTIES:\\s:ID:\\s+[\\w-]*\\s:END:)|(#\\+.+\\s)|/([\\w ]+)/|\\[\\[id:.+\\]\\[([\\w-]+)\\]\\]|``([\\w\\s]+)''|\\[cite:(@\\w+)\\]").expect("Unable to create regex pattern");
     let result = patterns.replace_all(&org_contents, |caps: &Captures| {
         if let Some(title) = caps.get(1) {
             format!(
@@ -39,7 +39,7 @@ pub fn run(mut config: Config) -> Result<(), &'static str> {
                 }
             )
         } else if let Some(headline) = caps.get(3) {
-            format!("\n{}", "=".repeat(headline.len()))
+            format!("\n{} ", "=".repeat(headline.len()))
         } else if let Some(_) = caps.get(4) {
             String::from("```")
         } else if let Some(_) = caps.get(5) {
