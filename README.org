@@ -1,0 +1,4 @@
+#+title: org2typst
+#+author: Ziqin Gong
+
+Converts my org file to typst file to convert it to pdf file.
